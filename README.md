@@ -1,23 +1,112 @@
-import re
-from collections import Counter
+<!-- This is the markdown template for the final project of the Building AI course, 
+created by Reaktor Innovations and University of Helsinki. 
+Copy the template, paste it to your GitHub README and edit! -->
 
-# Exempel på loggar
-loggar = [
-    "2025-12-03 10:01:01 - INFO - User login: alice",
-    "2025-12-03 10:02:15 - ERROR - Failed login: bob",
-    "2025-12-03 10:03:20 - WARNING - Multiple failed logins: charlie",
-    "2025-12-03 10:04:45 - INFO - User login: alice",
-    "2025-12-03 10:05:00 - ERROR - Failed login: bob",
-    "2025-12-03 10:06:30 - ERROR - Failed login: bob"
-]
+# Project Title
 
-# Identifiera misstänkta aktiviteter (t.ex. fler än 2 misslyckade inloggningar)
-mönster = re.compile(r"Failed login: (\w+)")
-misslyckanden = [match.group(1) for logg in loggar for match in [mönster.search(logg)] if match]
+Final project for the Building AI course
+Anteckningar
 
-räkna_misslyckanden = Counter(misslyckanden)
+## Summary
 
-# Flagga misstänkta användare
-för var användare, antal i räkna_misslyckanden.items():
-    if antal > 2:
-        print(f"⚠️ Misstänkt aktivitet upptäckt: {användare} har {antal} misslyckade inloggningar")
+An AI-powered assistant that monitors plants’ health, predicts watering needs, and suggests optimal care using sensor and weather data. Att bygga AI-kursprojekt.
+
+
+## Background
+
+The project aims to solve common problems in plant care:
+
+Overwatering or underwatering plants.
+
+Difficulty in identifying plant diseases early.
+
+Lack of personalized care advice for different plant types.
+
+Many plant owners struggle to keep their plants healthy, and this can lead to frustration or wasted resources. I am personally motivated by my love for indoor gardening and the challenge of using AI to solve practical everyday problems.
+
+
+## How is it used?
+
+The system collects real-time data from sensors (moisture, light, temperature) and online weather forecasts. Users can access insights through a mobile or web app:
+
+Alerts when plants need watering.
+
+Notifications about unusual conditions (e.g., risk of disease).
+
+Personalized suggestions for fertilizer or repositioning.
+
+Users are plant owners who want to improve plant health and reduce maintenance effort.
+
+Images will make your README look nice!
+![Cat](https://upload.wikimedia.org/wikipedia/commons/5/5e/Sleeping_cat_on_her_back.jpg)
+
+If you need to resize images, you have to use an HTML tag, like this:
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Sleeping_cat_on_her_back.jpg" width="300">
+
+This is how you create code examples:
+```
+def main():
+   countries = ['Denmark', 'Finland', 'Iceland', 'Norway', 'Sweden']
+   pop = [5615000, 5439000, 324000, 5080000, 9609000]   # not actually needed in this exercise...
+   fishers = [1891, 2652, 3800, 11611, 1757]
+
+   totPop = sum(pop)
+   totFish = sum(fishers)
+
+   # write your solution here
+
+   for i in range(len(countries)):
+      print("%s %.2f%%" % (countries[i], 100.0))    # current just prints 100%
+
+main()
+```
+
+
+## Data sources and AI methods
+Data sources:
+
+IoT sensors for soil moisture, sunlight, temperature.
+
+Weather API for forecasts.
+
+Plant database for species-specific care guidelines.
+
+AI techniques:
+
+Supervised learning models for predicting watering needs.
+
+Anomaly detection for early disease detection.
+
+Reinforcement learning could optimize care strategies over time.
+
+| Syntax      | Description |
+| ----------- | ----------- |
+| Header      | Title       |
+| Paragraph   | Text        |
+
+## Challenges
+
+The model may not generalize to rare plant species.
+
+Sensor errors or missing data could affect predictions.
+
+Ethical concerns: users might rely solely on AI and ignore common-sense plant care.
+
+## What next?
+Integrate more sensor types (humidity, nutrient sensors).
+
+Expand plant species database.
+
+Develop a community feature where users can share tips and insights.
+
+Explore computer vision for automatic disease detection from leaf images.
+
+
+## Acknowledgments
+Inspiration: Plant Sensor Wiki
+
+Open-source libraries: TensorFlow, scikit-learn.
+* do not use code, images, data etc. from others without permission
+* when you have permission to use other people's materials, always mention the original creator and the open source / Creative Commons licence they've used
+  <br>For example: [Sleeping Cat on Her Back by Umberto Salvagnin](https://commons.wikimedia.org/wiki/File:Sleeping_cat_on_her_back.jpg#filelinks) / [CC BY 2.0](https://creativecommons.org/licenses/by/2.0)
+* etc
