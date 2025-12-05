@@ -1,25 +1,27 @@
-# AI-anteckningsminne
-Slutprojekt för kursen Att bygga AI
-import re
-from collections import Counter
+# security_ai.py
+import pandas as pd
+from sklearn.ensemble import IsolationForest
 
-# Exempel på loggar
-loggar = [
-    "2025-12-03 10:01:01 - INFO - User login: alice",
-    "2025-12-03 10:02:15 - ERROR - Failed login: bob",
-    "2025-12-03 10:03:20 - WARNING - Multiple failed logins: charlie",
-    "2025-12-03 10:04:45 - INFO - User login: alice",
-    "2025-12-03 10:05:00 - ERROR - Failed login: bob",
-    "2025-12-03 10:06:30 - ERROR - Failed login: bob"
-]
+# 1. Läs in loggdata
+# Exempel: CSV-fil med kolumner: timestamp, user, action, ip_address
+log_data = pd.read_csv('system_logs.csv')
 
-# Identifiera misstänkta aktiviteter (t.ex. fler än 2 misslyckade inloggningar)
-mönster = re.compile(r"Failed login: (\w+)")
-misslyckanden = [match.group(1) for logg in loggar for match in [mönster.search(logg)] if match]
+# 2. Förbehandling: konvertera IP-adresser och kategoriska data till numeriska
+log_data['ip_numeric'] = log_data['ip_address'].apply(lambda x: int(''.join(x.split('.'))))
+log_data['user_id'] = log_data['user'].astype('category').cat.codes
+log_data['action_id'] = log_data['action'].astype('category').cat.codes
 
-räkna_misslyckanden = Counter(misslyckanden)
+# 3. Skapa features för modellen
+features = log_data[['user_id', 'action_id', 'ip_numeric']]
 
-# Flagga misstänkta användare
-för var användare, antal i räkna_misslyckanden.items():
-    if antal > 2:
-        print(f"⚠️ Misstänkt aktivitet upptäckt: {användare} har {antal} misslyckade inloggningar")
+# 4. Träna Isolation Forest för att upptäcka anomalier
+model = IsolationForest(contamination=0.01, random_state=42)  # 1% misstänkta aktiviteter
+model.fit(features)
+
+# 5. Gör prediktioner: -1 = anomal, 1 = normal
+log_data['anomaly'] = model.predict(features)
+
+# 6. Visa misstänkta aktiviteter
+suspicious_logs = log_data[log_data['anomaly'] == -1]
+print("Misstänkta aktiviteter:")
+print(suspicious_logs[['timestamp', 'user', 'action', 'ip_address']])
